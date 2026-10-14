@@ -3,7 +3,6 @@ from rest_framework import serializers
 from .models import Project, Task, Tag
 from .services import HolidayService
 
-
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag

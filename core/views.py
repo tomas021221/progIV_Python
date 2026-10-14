@@ -8,6 +8,10 @@ from .repositories import TaskRepository
 from .serializers import ProjectSerializer, TaskSerializer
 from .services import TaskService
 
+from django.contrib.auth.models import User
+from rest_framework import generics, permissions
+from .serializers_auth import RegisterSerializer
+
 
 def health_check(request):
     return JsonResponse({"status": "ok", "service": "TaskFlow API"})
@@ -38,3 +42,8 @@ class TaskViewSet(viewsets.ModelViewSet):
         if page is not None:
             return self.get_paginated_response(self.get_serializer(page, many=True).data)
         return Response(self.get_serializer(tasks, many=True).data)
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = RegisterSerializer
+    permission_classes = [permissions.AllowAny]
