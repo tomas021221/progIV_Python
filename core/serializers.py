@@ -2,6 +2,7 @@ from datetime import date
 from rest_framework import serializers
 from .models import Project, Task, Tag
 from .services import HolidayService
+import nh3
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
@@ -53,5 +54,10 @@ class TaskSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError(
                     "Una tarea no puede tener estado 'en progreso' si el proyecto no tiene al menos una tarea completada."
                 )
-
+                
         return data
+
+    def validate_description(self, value):
+        if value:
+            return nh3.clean(value, tags=set())
+        return value
